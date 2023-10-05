@@ -1,4 +1,4 @@
-require_relative './rental'
+require_relative '/rental'
 
 class Book
   def initialize(title, author)
