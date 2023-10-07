@@ -16,4 +16,14 @@ class Student < Person
     @classroom = classroom
     classroom.students.push(self) unless classroom.students.include?(self)
   end
+
+  # Methods triggered by user
+  def self.list_all(people)
+    system 'clear'
+    puts 'List of all students'
+    puts ''
+    people.each do |person|
+      puts person.name if person.is_a?(Student)
+    end
+  end
 end
