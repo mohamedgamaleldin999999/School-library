@@ -16,8 +16,8 @@ class Person < Nameable
     @parent_permission = !parent_permission.nil?
   end
 
-  def add_rental(book, date)
-    Rental.new(book: book, person: self, date: date)
+  def add_rental(book)
+    Rental.new(book, self)
   end
 
   def can_use_services?
@@ -26,6 +26,14 @@ class Person < Nameable
 
   def correct_name
     @name
+  end
+
+  # Methods triggered by user
+  def self.list_all_people(people)
+    system 'clear'
+    puts 'List of all people: '
+    puts ''
+    people.each { |person| puts person.name }
   end
 
   private
