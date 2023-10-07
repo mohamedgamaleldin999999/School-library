@@ -26,11 +26,7 @@ class App
 
   def promt_start_input
     options = [
-      '',
-      '     [1] Add a person',
-      '     [2] Add a book',
-      '     [3] Add a rental',
-      '     [4] List all people',
+      '', '     [1] Add a person', '     [2] Add a book', '     [3] Add a rental', '     [4] List all people',
       '     [5] List all books',
       '     [6] List all rentals',
       '     [7] List all rentals for a given person id',
