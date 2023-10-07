@@ -56,7 +56,8 @@ class UserInput
     answer = gets.chomp.to_i
 
     if answer > books.length || answer <= 0
-      puts 'Error! To add a rental you must select a book that it is in the inventory. Please select one number from the list.'
+      puts 'Error! To add a rental you must select a book that it is in the inventory. Please select one number from
+      the list.'
       sleep 0.85
       rental_book(books)
     end

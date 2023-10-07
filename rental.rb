@@ -24,7 +24,8 @@ class Rental
     puts 'List of rentals'
     puts ''
     rentals.each do |rental|
-      puts "Book #{rental.book.title}, rented to #{rental.person.name} on #{rental.date.strftime('%d/%m/%Y')} at #{rental.date.strftime('%H:%M')}"
+      puts "Book #{rental.book.title}, rented to #{rental.person.name} on #{rental.date.strftime('%d/%m/%Y')}
+      at #{rental.date.strftime('%H:%M')}"
     end
   end
 

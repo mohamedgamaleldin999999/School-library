@@ -101,11 +101,8 @@ class App
       puts 'What is the age of the student?'
       age = gets.chomp.to_i
       puts 'What is his classroom?'
-      # show classroom options
       classroom = UserInput.classroom(@classrooms)
-      # call method to find out parent permission
       parent_permission = UserInput.parent_permission
-      # instantiate a new student
       @people.push(Student.new(classroom: classroom, name: name, age: age, parent_permission: parent_permission))
       system 'clear'
       puts 'Student successfully added.'
@@ -116,7 +113,6 @@ class App
       age = gets.chomp.to_i
       puts 'What is his specialization?'
       specialization = UserInput.specialization(@specializations)
-      # instantiate a new teacher
       @people.push(Teacher.new(specialization: specialization, name: name, age: age))
       system 'clear'
       puts 'Teacher successfully added.'
