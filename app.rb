@@ -1,127 +1,171 @@
-require_relative 'classroom'
-require_relative 'book'
-require_relative 'student'
-require_relative 'teacher'
-require_relative 'rental'
-require_relative 'user_input'
-require_relative 'load_data'
-require 'date'
+require 'person'
+require 'book'
+require 'student'
+require 'classroom'
+require 'rental'
+require 'teacher'
 
 class App
-  def start
-    # add instance variables
+  def initialize
     @books = []
-    @rentals = []
+    @students = []
+    @teachers = []
     @people = []
-    @classrooms = %w[Alpha Beta Charlie]
-    @specializations = %w[Ruby CSS JavaScript React]
-    # add dummy data
-    LoadData.load_data(@books, @people, @classrooms, @rentals)
-    # start
-    puts ''
-    puts 'Welcome to the School Library'
-    sleep 1.1
-    promt_start_input
+    @rentals = []
   end
 
-  def promt_start_input
-    options = [
-      '', '     [1] Add a person', '     [2] Add a book', '     [3] Add a rental', '     [4] List all people',
-      '     [5] List all books',
-      '     [6] List all rentals',
-      '     [7] List all rentals for a given person id',
-      '     [8] List all students',
-      '     [9] List all teachers',
-      '     [10] Exit',
-      ''
-    ]
-    puts ''
-    puts '-------------------------------------------------'
-    puts ''
-    puts 'What do you wanna do?'
-    puts "\nEnter a number from the options below:"
-    puts options
-    choice = gets.chomp.to_i
-    select_action(choice)
-    system 'clear'
+  # list of books
+  def list_books
+    if @books.empty?
+      puts 'No books found.'
+    else
+      @books.each_with_index do |book, index|
+        puts "#{index}) Title: \"#{book.title}\", Author: #{book.author}"
+      end
+    end
+    nil
   end
 
-  def select_action(choice)
-    case choice
+  # list of people method
+  def list_people
+    print 'Do you want to Create a list of a students (1) or a teachers (2)? [Input the number]: '
+    list_person = gets.chomp.to_i
+    case list_person
     when 1
-      add_person
-      promt_start_input
+      list_student
     when 2
-      Book.add_book(@books)
-      promt_start_input
-    when 3
-      Rental.add_rental(@books, @people, @rentals)
-      promt_start_input
-    when 4
-      Person.list_all_people(@people)
-      promt_start_input
-    when 5
-      Book.list_all(@books)
-      promt_start_input
-    when 6
-      Rental.list_all(@rentals)
-      promt_start_input
-    when 7
-      Rental.list_all_rentals_by_person_id(@people)
-      promt_start_input
-    when 8
-      Student.list_all(@people)
-      promt_start_input
-    when 9
-      Teacher.list_all(@people)
-      promt_start_input
-    when 10
-      system 'clear'
-      puts 'Exited the program.'
-      puts ''
-      puts 'See you next time!'
-      sleep 2
+      list_teacher
     else
-      system 'clear'
-      puts 'Error!'
-      puts 'Make sure you are typing exactly a NUMBER from the list'
-      sleep 0.75
-      promt_start_input
+      puts "\nInvalid input!!\n\n"
     end
   end
 
-  def add_person
-    puts 'To add a student, please enter 1'
-    puts 'To add a teacher, please enter 2'
-    user_input = gets.chomp.to_i
-    case user_input
-    when 1 # add a student ------------------
-      puts 'What is the name of the student?'
-      name = gets.chomp.to_s
-      puts 'What is the age of the student?'
-      age = gets.chomp.to_i
-      puts 'What is his classroom?'
-      classroom = UserInput.classroom(@classrooms)
-      parent_permission = UserInput.parent_permission
-      @people.push(Student.new(classroom: classroom, name: name, age: age, parent_permission: parent_permission))
-      system 'clear'
-      puts 'Student successfully added.'
-    when 2 # add a teacher ------------------
-      puts 'What is the name of the teacher?'
-      name = gets.chomp.to_s
-      puts 'What is the age of the teacher?'
-      age = gets.chomp.to_i
-      puts 'What is his specialization?'
-      specialization = UserInput.specialization(@specializations)
-      @people.push(Teacher.new(specialization: specialization, name: name, age: age))
-      system 'clear'
-      puts 'Teacher successfully added.'
+  def list_student
+    if @students.empty?
+      puts 'No students found.'
     else
-      system 'clear'
-      puts 'Error!'
-      puts 'To add a person you MUST choose between a student or teacher. Please select one number from the list.'
-      sleep 1.5
-      add_person
+      @students.each_with_index do |student, index|
+        puts "#{index}) [#{student.class}] ID: #{student.id}, Name: #{student.name},
+         Age: #{student.age}, classroom: #{student.classroom}"
+      end
     end
+    nil
+  end
+
+  def list_teacher
+    if @teachers.empty?
+      puts 'No teachers found.'
+    else
+      @teachers.each_with_index do |teacher, index|
+        puts "#{index}) [#{teacher.class}] ID: #{teacher.id}, Name: #{teacher.name},
+         Age: #{teacher.age}, specialization: #{teacher.specialization}"
+      end
+    end
+    nil
+  end
+
+  # Create a person method
+  def create_person
+    print 'Do you want to Create a student (1) or a teacher (2)? [Input the number]: '
+    select_person = gets.chomp.to_i
+    case select_person
+    when 1
+      create_student
+    when 2
+      create_teacher
+    else
+      puts "\nInvalid input\n\n"
+      create_person
+    end
+  end
+
+  def create_student
+    print 'Classroom: '
+    student_classroom = gets.chomp
+    print 'Age: '
+    student_age = gets.chomp.to_i
+    print 'Name: '
+    student_name = gets.chomp
+    print 'Has parent permission? [Y/N]: '
+    parent_permission = gets.chomp
+    student = Student.new(student_classroom, student_age, student_name, parent_permission: parent_permission)
+    @students << student
+    @people << student
+    puts 'Student created successfully'
+  end
+
+  def create_teacher
+    print 'Age: '
+    teacher_age = gets.chomp.to_i
+    print 'Name: '
+    teacher_name = gets.chomp
+    print 'Specialization: '
+    teacher_specialization = gets.chomp
+    teacher = Teacher.new(teacher_specialization, teacher_age, teacher_name)
+    @teachers << teacher
+    @people << teacher
+    puts 'Teacher created successfully'
+  end
+
+  # Create a book method
+  def create_book
+    print 'Title: '
+    book_title = gets.chomp
+    print 'Author: '
+    book_author = gets.chomp
+    book = Book.new(book_title, book_author)
+    @books << book
+    puts 'Book created successfully'
+  end
+
+  #  Create a rental method
+  def display_people
+    if @people.empty?
+      puts 'No people found.'
+    else
+      @people.each_with_index do |person, index|
+        puts "#{index}) [#{person.class}] ID:- #{person.id}, Name:- #{person.name}, Age:- #{person.age}"
+      end
+    end
+    nil
+  end
+
+  def create_rental
+    if @books.empty? || (@teachers.empty? && @students.empty?)
+      puts 'list are empty'
+    else
+      puts 'Select a book from the following list by number'
+      list_books
+      book_number = gets.chomp.to_i
+      book_name = @books[book_number]
+
+      puts 'Select a person from the following list by number (not id)'
+      display_people
+      person_number = gets.chomp.to_i
+      person_name = @people[person_number]
+
+      print 'Date:'
+      date = gets.chomp
+      rental = Rental.new(book_name, person_name, date)
+      @rentals << rental
+      puts 'Rental created successfully'
+    end
+    nil
+  end
+
+  # Show list of rentals
+  def list_rentals
+    if @rentals.empty?
+      puts 'No rentals found.'
+    else
+      print 'ID of person: '
+      person_id = gets.chomp.to_i
+      @rentals.each do |rental|
+        if rental.person.id == person_id
+          puts "Date: #{rental.date}, Book \"#{rental.book.title}\" by #{rental.book.author}"
+        end
+      end
+    end
+    nil
   end
 end
