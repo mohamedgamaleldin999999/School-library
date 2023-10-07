@@ -29,7 +29,7 @@ class Person < Nameable
   end
 
   private
-  
+
   def of_age?(age)
     age >= 18
   end
