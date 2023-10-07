@@ -8,7 +8,8 @@ class LoadData
     books_dummy_data.each do |book|
       books.push(Book.new(book[0], book[1]))
     end
-    students_names = %w[John Ana Kevin] students_names.each do |name|
+    students_names = %w[John Ana Kevin]
+    students_names.each do |name|
       people.push(Student.new(classroom: 'Alpha', age: 22, name: name, parent_permission: true))
     end
     teachers_names = %w[John Ana Kevin]
