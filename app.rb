@@ -28,10 +28,10 @@ class App
 
   # list of people method
   def list_people
-    puts "List of People:"
+    puts 'List of People:'
     list_student
     list_teacher
-  end  
+  end
 
   def list_student
     if @students.empty?

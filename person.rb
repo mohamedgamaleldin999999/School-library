@@ -6,9 +6,10 @@ require_relative 'rental'
 class Person < Nameable
   attr_accessor :name, :age, :rentals
   attr_reader :id
-  @@id_counter = 0
 
-  def initialize(age, name= 'Unknown', parent_permission: true)
+  @id_counter = 0
+
+  def initialize(age, name = 'Unknown', parent_permission: true)
     super()
     @id = generate_id
     @rentals = []
@@ -18,7 +19,7 @@ class Person < Nameable
   end
 
   def generate_id
-    @@id_counter += 1
+    self.class.instance_variable_get(:@id_counter) += 1
   end
 
   def add_rental(book)
