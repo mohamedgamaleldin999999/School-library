@@ -28,17 +28,10 @@ class App
 
   # list of people method
   def list_people
-    print 'Do you want to Create a list of a students (1) or a teachers (2)? [Input the number]: '
-    list_person = gets.chomp.to_i
-    case list_person
-    when 1
-      list_student
-    when 2
-      list_teacher
-    else
-      puts "\nInvalid input!!\n\n"
-    end
-  end
+    puts "List of People:"
+    list_student
+    list_teacher
+  end  
 
   def list_student
     if @students.empty?
