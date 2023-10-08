@@ -7,19 +7,13 @@ class Person < Nameable
   attr_accessor :name, :age, :rentals
   attr_reader :id
 
-  @id_counter = 0
-
-  def initialize(age, name = 'Unknown', parent_permission: true)
+  def initialize(age, name = 'Unknown', parent_permission = true)
     super()
-    @id = generate_id
+    @id = generate_uuid_as_hexadecimal
     @rentals = []
     @name = name
     @age = age
     @parent_permission = !parent_permission.nil?
-  end
-
-  def generate_id
-    self.class.instance_variable_get(:@id_counter) += 1
   end
 
   def add_rental(book)
@@ -43,6 +37,11 @@ class Person < Nameable
   end
 
   private
+
+  def generate_uuid_as_hexadecimal
+    uuid = SecureRandom.uuid
+    uuid.gsub('-', '').to_i(16)
+  end
 
   def of_age?(age)
     age >= 18
