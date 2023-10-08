@@ -6,14 +6,19 @@ require_relative 'rental'
 class Person < Nameable
   attr_accessor :name, :age, :rentals
   attr_reader :id
+  @@id_counter = 0
 
   def initialize(age, name= 'Unknown', parent_permission: true)
     super()
-    @id = SecureRandom.uuid
+    @id = generate_id
     @rentals = []
     @name = name
     @age = age
     @parent_permission = !parent_permission.nil?
+  end
+
+  def generate_id
+    @@id_counter += 1
   end
 
   def add_rental(book)
